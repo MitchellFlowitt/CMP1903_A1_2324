@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +14,23 @@ namespace CMP1903_A1_2324
          */
 
         //Property
+        private int _value;
+        //creates a static random variable accross all objects to avoid generating the same random sequence when random variable are generated within a short time frame
+        private static Random _R = new Random();
 
+        //getters/setters for encapsulated values
+       public int Value { get { return _value; } set {  value = value + 1; } }
 
         //Method
+        public int Roll()
+        {
+            //generates a random number between 1 and 6 inclusive
+            int y = _R.Next(1,7);
 
+            //sets the value of the die and returns it
+            _value = y;
+            return _value;
+        }
 
     }
 }
