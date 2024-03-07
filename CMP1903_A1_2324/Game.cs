@@ -1,4 +1,3 @@
-using CMP1903_A1_2324;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,34 +8,36 @@ namespace CMP1903_A1_2324
 {
     internal class Game
     {
-        //game fields and properties
+        //game fields and properties set to private for encapsulation
         private Die _die1;
-        private Die _die2; 
+        private Die _die2;
         private Die _die3;
         private int _numOfRolls = 0;
         private int _currentRoll = 0;
         private int _highestRoll = 0;
         private int _lowestRoll = 18;
         private int _sumOfRolls = 0;
+        public static bool stillPlaying = true;
 
         //constructor that creats the dice objects
-        public Game() 
+        public Game()
         {
             _die1 = new Die();
             _die2 = new Die();
             _die3 = new Die();
         }
 
-        //getters/setters
-        public Die Die1 { get {  return _die1; } }
-        public Die Die2 { get {  return _die2; } }
-        public Die Die3 { get {  return _die3; } }
+        //getters/setters for public access to encapsulated variables
+        public Die Die1 { get { return _die1; } }
+        public Die Die2 { get { return _die2; } }
+        public Die Die3 { get { return _die3; } }
         public int NumOfRolls { get { return _numOfRolls; } }
-        public int CurrentRoll { get {  return _currentRoll; } }
+        public int CurrentRoll { get { return _currentRoll; } }
         public int HighestRoll { get { return _highestRoll; } }
         public int LowestRoll { get { return _lowestRoll; } }
-        public int SumOfRolls { get { return _sumOfRolls;} }
+        public int SumOfRolls { get { return _sumOfRolls; } }
 
+        //function that controls the gameplay
         public void PlayGame()
         {
 
@@ -51,13 +52,14 @@ namespace CMP1903_A1_2324
                 _die3.Roll();
 
                 //prints out the rolls of each dice
-                Console.WriteLine("the first die rolled "+_die1.Value);
-                Console.WriteLine("the second die rolled "+_die2.Value);
-                Console.WriteLine("the third die rolled "+_die3.Value);
+                Console.WriteLine("the first die rolled " + _die1.Value);
+                Console.WriteLine("the second die rolled " + _die2.Value);
+                Console.WriteLine("the third die rolled " + _die3.Value);
+                Console.WriteLine("press enter to roll again");
 
-                //edits the value for current, lowest and highest roll
+                //edits the value for current, lowest and highest roll if they have changed after the previous roll
                 _currentRoll = _die1.Value + _die2.Value + _die3.Value;
-                if (_currentRoll > _highestRoll) 
+                if (_currentRoll > _highestRoll)
                 {
                     _highestRoll = _currentRoll;
                 }
@@ -65,19 +67,31 @@ namespace CMP1903_A1_2324
                 {
                     _lowestRoll = _currentRoll;
                 }
-                //increments the number of rolls this game and updates the sum of all rolls
+                //increments the number of rolls this game and updates the sum of all rolls for use in post game statistics
                 _numOfRolls++;
-                _sumOfRolls += _currentRoll; 
-
-                //sums the rolls of each of the 3 dice
-                Console.WriteLine();
-
+                _sumOfRolls += _currentRoll;
                 x = Console.ReadLine();
             }
             ShowStatistics();
+            while (true) 
+            {
+                Console.WriteLine("would you like to play again (y/n)");
+                string playAgain = Console.ReadLine();
+                if (playAgain.ToLower() == "y")
+                {
+                    stillPlaying = true;
+                    break;
+                }
+                else if (playAgain.ToLower() == "n") 
+                { 
+                    stillPlaying = false;
+                    break;
+                }
+                Console.WriteLine("please enter a valid input");
+            }
         }
 
-        //rolls the dice for the purposes of testing
+        //rolls all 3 dice individually then sums them for use by the Testing class
         public int RollDice()
         {
             _die1.Roll();
@@ -90,10 +104,11 @@ namespace CMP1903_A1_2324
         //prints the lowest, highest and average roll
         public void ShowStatistics()
         {
-            Console.WriteLine("the highest roll in that game was "+ _highestRoll);
-            Console.WriteLine("the lowest roll in that game was "+ _lowestRoll);
+            Console.WriteLine("the highest roll in that game was " + _highestRoll);
+            Console.WriteLine("the lowest roll in that game was " + _lowestRoll);
+            //calculates the average roll
             float averageRoll = _sumOfRolls / _numOfRolls;
-            Console.WriteLine("the average roll that game was "+averageRoll);
+            Console.WriteLine("the average roll that game was " + averageRoll);
         }
     }
 }
